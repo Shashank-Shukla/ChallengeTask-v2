@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChallengeTask_v2.Tables
 {
+    [Table("Collateral_Agreements")]
     public class Collateral_agreements
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]

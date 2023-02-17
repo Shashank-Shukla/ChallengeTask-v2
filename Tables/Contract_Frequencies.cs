@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChallengeTask_v2.Tables
 {
+    [Table("Contract_Frequencies")]
     public class Contract_Frequencies
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
