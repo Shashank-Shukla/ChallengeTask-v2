@@ -60,20 +60,14 @@ namespace ChallengeTask_v2.Controllers
             CF_obj.IF_ID.Add(IF_obj);
             CA_obj.CF_ID.Add(CF_obj);
 
-            this._context.Add(CA_obj);
-            this._context.SaveChanges();
-            
-            //using(var context = new ApplicationDbContext())
-            //{
-            //    using(DbContextTransaction transaction = (DbContextTransaction)context.Database.BeginTransaction())
-            //    {
-            //        context.Add(CA_obj);
-            //        context.SaveChanges();
-            //    }
-            //}
+            using (DbContextTransaction transaction = (DbContextTransaction)this._context.Database.BeginTransaction())
+            {
+                this._context.Add(CA_obj);
+                this._context.BulkSaveChanges();
+            }
 
 
-            return View();
+                return View();
         }
 
         public IActionResult Privacy()
