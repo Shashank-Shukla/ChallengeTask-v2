@@ -20,54 +20,57 @@ namespace ChallengeTask_v2.Controllers
 
         public IActionResult Index()
         {
-            //Collateral_agreements CA_obj = new Collateral_agreements()
-            //{
-            //    CAName = "Input-1",
-            //};
-            //Contract_Frequencies CF_obj = new Contract_Frequencies()
-            //{
-            //    CFName = "Input-1",
-            //    //Collateral_Agreements_ID = CA_obj.CollateralAgreementID,
-            //    Collateral_Agreements = CA_obj
-            //};
-            //Interest_frequency IF_obj = new Interest_frequency()
-            //{
-            //    IFName = "Input-1",
-            //    Contract_Frequencies = CF_obj
-            //};
+            Collateral_agreements CA_obj = null;
+            Contract_Frequencies CF_obj = null;
+            Interest_frequency IF_obj = null;
 
-            //// Save changes
-            //CF_obj.IF_obj.Add();
-
-            //var context = new ApplicationDbContext(new Microsoft.EntityFrameworkCore.DbContextOptions<ApplicationDbContext>());
-
-            Collateral_agreements CA_obj = new Collateral_agreements()
+            // Inserting test data
+            for (int i = 0; i < 20; i++)
             {
-                CAName = "Input-A",
-            };
-            Contract_Frequencies CF_obj = new Contract_Frequencies()
-            {
-                CFName = "Input-A",
-            };
-            Interest_frequency IF_obj = new Interest_frequency()
-            {
-                IFName = "Input-A"
-            };
+                CA_obj = new Collateral_agreements() {
+                    CAName = $"Entry-{i}",
+                };
+                CF_obj = new Contract_Frequencies();
+                IF_obj = new Interest_frequency();
 
-            CF_obj.Collateral_Agreements_ID = CA_obj;
-            IF_obj.Contract_Frequencies_ID = CF_obj;
+                for (int j = 0; j <= i; j++)
+                {
+                    CF_obj.CFName = $"Entry-{i}_{j}";
+                    CF_obj.Collateral_Agreements_ID = CA_obj;
 
-            CF_obj.IF_ID.Add(IF_obj);
-            CA_obj.CF_ID.Add(CF_obj);
+                    IF_obj.IFName = $"Entry-{i}_{j}";
+                    IF_obj.Contract_Frequencies_ID = CF_obj;
 
-            using (DbContextTransaction transaction = (DbContextTransaction)this._context.Database.BeginTransaction())
-            {
+                    CF_obj.IF_ID.Add(IF_obj);
+                    
+                }
+                CA_obj.CF_ID.Add(CF_obj);
+
                 this._context.Add(CA_obj);
-                this._context.BulkSaveChanges();
+                //this._context.SaveChanges();
             }
 
+            //this._context.Add(CA_obj);
+            this._context.SaveChanges();
+            //this._context.BulkSaveChanges();
 
-                return View();
+            //using (var transactions = _context.Database.BeginTransaction())
+            //{
+            //    try
+            //    {
+            //        this._context.Add(CA_obj);
+            //        this._context.BulkSaveChanges();
+            //        transactions.Commit();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        transactions.Rollback();
+            //        throw;
+            //    }
+            //}
+
+
+            return View();
         }
 
         public IActionResult Privacy()
