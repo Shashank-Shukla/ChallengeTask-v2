@@ -28,30 +28,37 @@ namespace ChallengeTask_v2.Controllers
             for (int i = 0; i < 20; i++)
             {
                 CA_obj = new Collateral_agreements() {
-                    CAName = $"Entry-{i}",
+                    CAName = $"Parent_Entry-{i}",
                 };
-                CF_obj = new Contract_Frequencies();
-                IF_obj = new Interest_frequency();
 
                 for (int j = 0; j <= i; j++)
                 {
-                    CF_obj.CFName = $"Entry-{i}_{j}";
-                    CF_obj.Collateral_Agreements_ID = CA_obj;
+                    CF_obj = new Contract_Frequencies() 
+                    {
+                        CFName = $"Child_Entry-{i}_{j}",
+                        Collateral_Agreements_ID = CA_obj
+                    };
 
-                    IF_obj.IFName = $"Entry-{i}_{j}";
-                    IF_obj.Contract_Frequencies_ID = CF_obj;
+                    for (int k = 0; k<= j; k++)
+                    {
+                        IF_obj = new Interest_frequency()
+                        {
+                            IFName = $"GrandChild_Entry-{i}_{j}",
+                            Contract_Frequencies_ID = CF_obj
+                        };
 
-                    CF_obj.IF_ID.Add(IF_obj);
-                    
+                        CF_obj.IF_ID.Add(IF_obj);
+                    }
+
+                    CA_obj.CF_ID.Add(CF_obj);
                 }
-                CA_obj.CF_ID.Add(CF_obj);
+                
 
                 this._context.Add(CA_obj);
-                //this._context.SaveChanges();
             }
 
-            //this._context.Add(CA_obj);
             this._context.SaveChanges();
+            this._context.Dispose();
             //this._context.BulkSaveChanges();
 
             //using (var transactions = _context.Database.BeginTransaction())
